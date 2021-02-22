@@ -119,10 +119,17 @@ static void* playbackBufferFullContext = &playbackBufferFullContext;
     height = videoTrack.naturalSize.width;
   }
   videoComposition.renderSize = CGSizeMake(width, height);
+    
+  float nominalFrameRate = videoTrack.nominalFrameRate;
+  
+  int fps = 30;
 
-  // TODO(@recastrodiaz): should we use videoTrack.nominalFrameRate ?
-  // Currently set at a constant 30 FPS
-  videoComposition.frameDuration = CMTimeMake(1, 30);
+  if (nominalFrameRate > 0)
+  {
+      fps = (int) ceil(nominalFrameRate);
+  }
+  
+  videoComposition.frameDuration = CMTimeMake(1, fps);
 
   return videoComposition;
 }
